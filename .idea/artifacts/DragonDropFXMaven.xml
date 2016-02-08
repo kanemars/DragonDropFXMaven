@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" build-on-make="true" name="DragonDropFXMaven">
+    <output-path>$PROJECT_DIR$/out/artifacts/DragonDropFXMaven</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="kanemars.DragonDropFXApplication" />
+        <option name="description" value="A desktop application for lazy typists to click once on commonly used strings (like email addresses or database connection strings) and have them immediately saved to the clipboard. Or you can drag them over to an input box and drop them there (hence the name)." />
+        <option name="htmlParamFile" value="" />
+        <option name="paramFile" value="" />
+        <option name="title" value="DragonDropFX" />
+        <option name="vendor" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="DragonDropFXMaven.jar">
+        <element id="module-output" name="DragonDropFXMaven" />
+      </element>
+    </root>
+  </artifact>
+</component>

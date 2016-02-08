@@ -1,0 +1,1 @@
+start javaw -jar C:\Users\P10158774\IdeaProjects\DragonDropFXMaven\out\artifacts\DragonDropFXMaven\dragondropFXMaven.jar C:\Users\P10158774\Desktop\cutandpaste.txt
