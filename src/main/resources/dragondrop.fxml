@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
 <GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kanemars.DragonDropFXController">
-    <TabPane fx:id="tabPanes" prefHeight="4000.0" prefWidth="2000.0" tabClosingPolicy="UNAVAILABLE">
+    <padding><Insets top="5" right="5" bottom="0" left="5"/></padding>
+    <HBox GridPane.rowIndex="0"><TextField fx:id="findText" promptText="Enter text to search" /></HBox>
+
+    <TabPane GridPane.rowIndex="1" fx:id="tabPanes" prefHeight="4000.0" prefWidth="2000.0" tabClosingPolicy="UNAVAILABLE">
     </TabPane>
-    <columnConstraints>
-        <ColumnConstraints />
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints />
-    </rowConstraints>
+
 </GridPane>

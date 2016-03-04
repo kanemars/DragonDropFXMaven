@@ -4,6 +4,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
@@ -13,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -20,30 +22,46 @@ import java.util.ResourceBundle;
  */
 public class DragonDropFXController implements Initializable {
     public TabPane tabPanes;
-    int mouseDownStart;
+    public TextField findText;
     static String newline = "\n";
     static int newlineLength = newline.length();
     final Clipboard clipboard = Clipboard.getSystemClipboard();
+    ArrayList<TextArea> textAreas = new ArrayList<TextArea>();
 
     public void initialize(URL location, ResourceBundle resources) {
         final String cutAndPasteFile = DragonDropFXApplication.parameters.get(0);
+        findText.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            if (newValue.length() > 1) {
+                for (TextArea t : textAreas) {
+                    int offset = t.getText().indexOf(newValue);
+                    if (offset != -1) {
+                        t.selectRange(offset, offset + newValue.length());
+
+                        return;
+                    }
+                }
+            }
+        });
+
+
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(cutAndPasteFile)));
             String strLine = br.readLine();
 
             if (strLine != null) {
-                TextArea list;
+                TextArea textArea;
                 if (strLine.startsWith("#")) {
-                    list = addTab(strLine.substring(1));
+                    textArea = addTabAndReturnItsTextArea(strLine.substring(1));
                 } else {
-                    list = addTab("Main");
-                    list.appendText(strLine + newline);
+                    textArea = addTabAndReturnItsTextArea("Main");
+                    textArea.appendText(strLine + newline);
                 }
                 while ((strLine = br.readLine()) != null) {
                     if (strLine.startsWith("#")) {
-                        list = addTab(strLine.substring(1));
+                        textArea = addTabAndReturnItsTextArea(strLine.substring(1));
                     } else {
-                        list.appendText(strLine + newline);
+                        textArea.appendText(strLine + newline);
                     }
                 }
             }
@@ -52,7 +70,7 @@ public class DragonDropFXController implements Initializable {
         }
     }
 
-    private TextArea addTab(String tabTitle) {
+    private TextArea addTabAndReturnItsTextArea(String tabTitle) {
         TextArea newArea = addTextArea();
 
         Tab tab = new Tab(tabTitle);
@@ -63,6 +81,7 @@ public class DragonDropFXController implements Initializable {
 
     private TextArea addTextArea() {
         TextArea newArea = new TextArea();
+        textAreas.add(newArea);
 
         newArea.setOnMouseClicked((MouseEvent event) -> {
             if (newArea.getSelectedText().length() == 0) {
