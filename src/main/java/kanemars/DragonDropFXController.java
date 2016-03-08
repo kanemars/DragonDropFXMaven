@@ -14,36 +14,31 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-/**
- * Created by P10158774 on 05/02/2016.
- */
 public class DragonDropFXController implements Initializable {
     public TabPane tabPanes;
     public TextField findText;
     static String newline = "\n";
     static int newlineLength = newline.length();
     final Clipboard clipboard = Clipboard.getSystemClipboard();
-    ArrayList<TextArea> textAreas = new ArrayList<TextArea>();
 
     public void initialize(URL location, ResourceBundle resources) {
         final String cutAndPasteFile = DragonDropFXApplication.parameters.get(0);
         findText.textProperty().addListener((observable, oldValue, newValue) -> {
 
             if (newValue.length() > 1) {
-                for (TextArea t : textAreas) {
-                    int offset = t.getText().indexOf(newValue);
+                for (Tab tab : tabPanes.getTabs()) {
+                    TextArea textArea = (TextArea) tab.getContent();
+                    int offset = textArea.getText().toLowerCase().indexOf(newValue.toLowerCase());
                     if (offset != -1) {
-                        t.selectRange(offset, offset + newValue.length());
-
+                        textArea.selectRange(offset, offset + newValue.length());
+                        tabPanes.getSelectionModel().select(tab);
                         return;
                     }
                 }
             }
         });
-
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(cutAndPasteFile)));
@@ -66,7 +61,7 @@ public class DragonDropFXController implements Initializable {
                 }
             }
         } catch (IOException ex) {
-            System.out.println(ex.getMessage() + ex.getStackTrace());
+            System.out.printf("%s%s%n", ex.getMessage(), ex.getStackTrace());
         }
     }
 
@@ -81,8 +76,6 @@ public class DragonDropFXController implements Initializable {
 
     private TextArea addTextArea() {
         TextArea newArea = new TextArea();
-        textAreas.add(newArea);
-
         newArea.setOnMouseClicked((MouseEvent event) -> {
             if (newArea.getSelectedText().length() == 0) {
                 int caret = newArea.getCaretPosition();
@@ -91,7 +84,6 @@ public class DragonDropFXController implements Initializable {
                 while (lineStart > 0 && !newArea.getText(lineStart, lineEnd).startsWith(newline))
                     lineStart--;
 
-                // Adjustments
                 if (newArea.getText(lineStart, lineEnd).startsWith(newline))
                     lineStart += newlineLength;
 
@@ -112,8 +104,5 @@ public class DragonDropFXController implements Initializable {
             content.putString(s);
             clipboard.setContent(content);
         }
-    }
-
-    {
     }
 }
