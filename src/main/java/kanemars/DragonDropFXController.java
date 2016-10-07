@@ -14,17 +14,24 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.DoubleAccumulator;
 
 public class DragonDropFXController implements Initializable {
     public TabPane tabPanes;
     public TextField findText;
-    static String newline = "\n";
-    static int newlineLength = newline.length();
-    final Clipboard clipboard = Clipboard.getSystemClipboard();
+    private static String newline = "\n";
+    private static int newlineLength = newline.length();
+    private final Clipboard clipboard = Clipboard.getSystemClipboard();
 
     public void initialize(URL location, ResourceBundle resources) {
-        final String cutAndPasteFile = DragonDropFXApplication.parameters.get(0);
+        addFindTextFunctionality();
+
+        copyFileContentsToTextAreas();
+    }
+
+    private void addFindTextFunctionality() {
         findText.textProperty().addListener((observable, oldValue, newValue) -> {
 
             if (newValue.length() > 1) {
@@ -39,7 +46,10 @@ public class DragonDropFXController implements Initializable {
                 }
             }
         });
+    }
 
+    private void copyFileContentsToTextAreas() {
+        final String cutAndPasteFile = DragonDropFXApplication.parameters.get(0);
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(cutAndPasteFile)));
             String strLine = br.readLine();
@@ -59,9 +69,10 @@ public class DragonDropFXController implements Initializable {
                         textArea.appendText(strLine + newline);
                     }
                 }
+                //textArea.setScrollTop(Double.MIN_VALUE); Want to have the scrollbar at the top initially, when there is lots of text
             }
         } catch (IOException ex) {
-            System.out.printf("%s%s%n", ex.getMessage(), ex.getStackTrace());
+            System.out.printf("%s%s%n", ex.getMessage(), Arrays.toString(ex.getStackTrace()));
         }
     }
 
