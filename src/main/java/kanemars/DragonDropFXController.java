@@ -51,7 +51,7 @@ public class DragonDropFXController implements Initializable {
     private void copyFileContentsToTextAreas() {
         final String cutAndPasteFile = DragonDropFXApplication.parameters.get(0);
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(cutAndPasteFile)));
+            var br = new BufferedReader(new InputStreamReader(new FileInputStream(cutAndPasteFile)));
             String strLine = br.readLine();
 
             if (strLine != null) {
