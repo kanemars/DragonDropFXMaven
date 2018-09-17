@@ -1,7 +1,3 @@
-/**
- * Created by P10158774 on 05/02/2016.
- */
-
 package kanemars;
 
 import javafx.application.Application;
@@ -15,7 +11,7 @@ import java.util.List;
 
 public class DragonDropFXApplication extends Application {
 
-    public static List<String> parameters;
+    static List<String> parameters;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -25,7 +21,7 @@ public class DragonDropFXApplication extends Application {
         Image ico = new Image("Dragon-Age-Origins-new-4-icon.png");
         primaryStage.getIcons().add(ico);
         primaryStage.setTitle("Dragon Drop FX");
-        primaryStage.setScene(new Scene(root, 700, 1000));
+        primaryStage.setScene(new Scene(root, 700, 600));
 
         primaryStage.show();
     }
