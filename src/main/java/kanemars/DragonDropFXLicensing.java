@@ -7,9 +7,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by P10158774 on 26/02/2016.
- */
 class DragonDropFXLicensing {
     public static boolean IsLicensed () {
         String api = "https://api.gumroad.com/v2/licenses/verify?license_key=CC2BB8E1-C7154F4F-A1D8397D-45B90133&product_permalink=hJEZD";

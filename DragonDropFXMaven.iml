@@ -11,6 +11,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="com.google.api-client:google-api-client:1.23.0" level="project" />
+    <orderEntry type="library" name="com.google.oauth-client:google-oauth-client-jetty:1.23.0" level="project" />
+    <orderEntry type="library" name="com.google.apis:google-api-services-drive:v3-rev110-1.23.0" level="project" />
     <orderEntry type="library" name="Maven: net.java.truelicense:truelicense-core:2.6.4" level="project" />
     <orderEntry type="library" name="Maven: net.java.truelicense:truelicense-obfuscate:2.6.4" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:annotations:3.0.0" level="project" />
