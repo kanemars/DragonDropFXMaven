@@ -9,10 +9,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -49,9 +46,16 @@ public class DragonDropFXController implements Initializable {
     }
 
     private void copyFileContentsToTextAreas() {
-        final String cutAndPasteFile = DragonDropFXApplication.parameters.get(0);
+        boolean isFileOnGoogleDrive = DragonDropFXApplication.parameters.size() > 1;
+
+        final String cutAndPasteFile = DragonDropFXApplication.parameters.get(isFileOnGoogleDrive ? 1 : 0);
         try {
-            var br = new BufferedReader(new InputStreamReader(new FileInputStream(cutAndPasteFile)));
+            BufferedReader br;
+            if (isFileOnGoogleDrive) {
+                br = new BufferedReader(new StringReader(DriveQuickStart.LoadFileFromDrive(cutAndPasteFile)));
+            } else {
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(cutAndPasteFile)));
+            }
             String strLine = br.readLine();
 
             if (strLine != null) {
