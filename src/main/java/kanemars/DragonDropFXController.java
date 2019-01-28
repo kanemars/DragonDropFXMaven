@@ -13,7 +13,6 @@ import java.io.*;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.DoubleAccumulator;
 
 public class DragonDropFXController implements Initializable {
     public TabPane tabPanes;
@@ -52,7 +51,7 @@ public class DragonDropFXController implements Initializable {
         try {
             BufferedReader br;
             if (isFileOnGoogleDrive) {
-                br = new BufferedReader(new StringReader(DriveQuickStart.LoadFileFromDrive(cutAndPasteFile)));
+                br = new BufferedReader(new StringReader(GoogleDriveFileReader.LoadFileFromDrive(cutAndPasteFile)));
             } else {
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(cutAndPasteFile)));
             }

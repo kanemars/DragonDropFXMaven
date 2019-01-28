@@ -20,8 +20,8 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
-class DriveQuickStart {
-    private static final String APPLICATION_NAME = "Google Drive API Java QuickStart";
+class GoogleDriveFileReader {
+    private static final String APPLICATION_NAME = "DragonDrop";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
@@ -40,16 +40,16 @@ class DriveQuickStart {
      */
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
-        InputStream in = DriveQuickStart.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+        var in = GoogleDriveFileReader.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        var clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
         // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+        var flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline")
                 .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+        var receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
@@ -61,16 +61,16 @@ class DriveQuickStart {
                     .setApplicationName(APPLICATION_NAME)
                     .build();
 
-            var list = service.files().list()
+            var matchingFile = service.files().list()
                     .setQ("name = '" + filenameOnDrive + "'")
-                    .setPageSize(10)
-                    .setFields("nextPageToken, files(id, name)")
-                    .execute();
+                    .execute().getFiles();
 
-            var files = list.getFiles();
-            var fileMetaData = files.get(0);
+            if (matchingFile.isEmpty()) {
+                return "Could not find " + filenameOnDrive;
+            }
+            var fileMetaData = matchingFile.get(0);
 
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            var outputStream = new ByteArrayOutputStream();
             service.files().export(fileMetaData.getId(), "text/plain")
                     .executeMediaAndDownloadTo(outputStream);
             return outputStream.toString();
